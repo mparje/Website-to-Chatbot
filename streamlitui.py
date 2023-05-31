@@ -8,7 +8,7 @@ from langchain.chat_models import ChatOpenAI
 st.set_page_config(page_title="ChatPDF")
 
 # Obtener la clave de API de OpenAI desde una variable de entorno
-openai_api_key = os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 def display_messages():
     st.subheader("Chat")
@@ -31,7 +31,7 @@ def main():
     if len(st.session_state) == 0:
         st.session_state["messages"] = []
         st.session_state["url"] = ""
-        st.session_state["OPENAI_API_KEY"] = openai_api_key
+        st.session_state["OPENAI_API_KEY"] = OPENAI_API_KEY
         if is_openai_api_key_set():
             st.session_state["webquery"] = WebQuery(st.session_state["OPENAI_API_KEY"])
             st.session_state["llm"] = ChatOpenAI(temperature=1.0, openai_api_key=st.session_state["OPENAI_API_KEY"])
@@ -41,16 +41,16 @@ def main():
 
     st.header("Website to Chatbot")
 
-    if st.text_input("OpenAI API Key", value=openai_api_key, key="input_OPENAI_API_KEY", type="password"):
+    if st.text_input("OpenAI API Key", value=OPENAI_API_KEY, key="input_OPENAI_API_KEY", type="password"):
         if (
             len(st.session_state["input_OPENAI_API_KEY"]) > 0
             and st.session_state["input_OPENAI_API_KEY"] != st.session_state["OPENAI_API_KEY"]
         ):
-            openai_api_key = st.session_state["input_OPENAI_API_KEY"]
+            OPENAI_API_KEY = st.session_state["input_OPENAI_API_KEY"]
             st.session_state["messages"] = []
             st.session_state["user_input"] = ""
-            st.session_state["webquery"] = WebQuery(openai_api_key)
-            st.session_state["llm"] = ChatOpenAI(temperature=1.0, openai_api_key=openai_api_key)
+            st.session_state["webquery"] = WebQuery(OPENAI_API_KEY)
+            st.session_state["llm"] = ChatOpenAI(temperature=1.0, openai_api_key=OPENAI_API_KEY)
 
     st.subheader("Add a url")
     if st.text_input("Input url", value=st.session_state["url"], key="input_url", type="default"):
