@@ -6,7 +6,7 @@ from webquery import WebQuery
 from langchain.chat_models import ChatOpenAI
 
 st.set_page_config(page_title="ChatPDF")
-
+ 
 # Obtener la clave de API de OpenAI desde una variable de entorno
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
