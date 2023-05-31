@@ -7,7 +7,7 @@ from webquery import WebQuery
 st.set_page_config(page_title="ChatPDF")
 
 # Obtener la clave de API de OpenAI desde una variable de entorno
-api_key = os.getenv("OPENAI_API_KEY")
+openai_api_key = os.getenv("OPENAI_API_KEY")
 
 def display_messages():
     st.subheader("Chat")
