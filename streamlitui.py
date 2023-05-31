@@ -26,10 +26,6 @@ def process_input():
         st.session_state["messages"].append((query_text, False))
 
 
-def is_openai_api_key_set() -> bool:
-    return len(st.session_state["OPENAI_API_KEY"]) > 0
-
-
 def main():
     if len(st.session_state) == 0:
         st.session_state["messages"] = []
