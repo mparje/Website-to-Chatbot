@@ -3,6 +3,7 @@ import tempfile
 import streamlit as st
 from streamlit_chat import message
 from webquery import WebQuery
+from langchain.chat_models import ChatOpenAI
 
 st.set_page_config(page_title="ChatPDF")
 
@@ -30,22 +31,26 @@ def main():
     if len(st.session_state) == 0:
         st.session_state["messages"] = []
         st.session_state["url"] = ""
+        st.session_state["OPENAI_API_KEY"] = openai_api_key
         if is_openai_api_key_set():
-            st.session_state["webquery"] = WebQuery(openai_api_key)
+            st.session_state["webquery"] = WebQuery(st.session_state["OPENAI_API_KEY"])
+            st.session_state["llm"] = ChatOpenAI(temperature=1.0, openai_api_key=st.session_state["OPENAI_API_KEY"])
         else:
             st.session_state["webquery"] = None
+            st.session_state["llm"] = None
 
     st.header("Website to Chatbot")
 
     if st.text_input("OpenAI API Key", value=openai_api_key, key="input_OPENAI_API_KEY", type="password"):
         if (
             len(st.session_state["input_OPENAI_API_KEY"]) > 0
-            and st.session_state["input_OPENAI_API_KEY"] != openai_api_key
+            and st.session_state["input_OPENAI_API_KEY"] != st.session_state["OPENAI_API_KEY"]
         ):
             openai_api_key = st.session_state["input_OPENAI_API_KEY"]
             st.session_state["messages"] = []
             st.session_state["user_input"] = ""
             st.session_state["webquery"] = WebQuery(openai_api_key)
+            st.session_state["llm"] = ChatOpenAI(temperature=1.0, openai_api_key=openai_api_key)
 
     st.subheader("Add a url")
     if st.text_input("Input url", value=st.session_state["url"], key="input_url", type="default"):
